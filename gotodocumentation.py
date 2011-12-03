@@ -67,13 +67,20 @@ class GotoDocumentationCommand(sublime_plugin.TextCommand):
             if not word.empty():
                 # scope: "text.html.basic source.php.embedded.block.html keyword.other.new.php"
                 scope = self.view.scope_name(word.begin()).strip()
-                extracted_scope = scope.rpartition('.')[2]
+                scope_array = scope.rpartition('.')
+                scope_split = scope.split('.')
+                if scope_split[2] == "jquery support":
+                    extracted_scope = "jquery" 
+                else:
+                    extracted_scope = scope_array[2]
+                sublime.status_message("original scope: %s " % extracted_scope)                
                 keyword = self.view.substr(word)
                 getattr(self, '%s_doc' % extracted_scope, self.unsupported)(keyword, scope)
 
     def unsupported(self, keyword, scope):
-        sublime.status_message("This scope is not supported: %s" % scope.rpartition('.')[2])
-
+        # sublime.status_message("This scope is not supported: %s" % scope.rpartition('.')[2])
+		open_url("http://beta.gotapi.com/%s" % keyword)
+		
     def php_doc(self, keyword, scope):
         open_url("http://php.net/%s" % keyword)
 
@@ -85,11 +92,15 @@ class GotoDocumentationCommand(sublime_plugin.TextCommand):
 
     def ruby_doc(self, keyword, scope):
         open_url("http://api.rubyonrails.org/?q=%s" % keyword)
-
+    
+    def jquery_doc(self, keyword, scope):
+        open_url("http://api.jquery.com/%s" % keyword)
+     
     def js_doc(self, keyword, scope):
         open_url("https://developer.mozilla.org/en-US/search?q=%s" % keyword)
 
     coffee_doc = js_doc
+    html_doc = js_doc
 
     def python_doc(self, keyword, scope):
         """Not trying to be full on intellisense here, but want to make opening a
