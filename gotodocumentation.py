@@ -80,7 +80,7 @@ class GotoDocumentationCommand(sublime_plugin.TextCommand):
     def unsupported(self, keyword, scope):
         # sublime.status_message("This scope is not supported: %s" % scope.rpartition('.')[2])
 		open_url("http://beta.gotapi.com/%s" % keyword)
-		
+
     def php_doc(self, keyword, scope):
         open_url("http://php.net/%s" % keyword)
 
@@ -101,6 +101,7 @@ class GotoDocumentationCommand(sublime_plugin.TextCommand):
 
     coffee_doc = js_doc
     html_doc = js_doc
+    css_doc = js_doc
 
     def python_doc(self, keyword, scope):
         """Not trying to be full on intellisense here, but want to make opening a
